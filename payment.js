@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Paystack, paystackProps } from 'react-native-paystack-webview';
 import { View, TouchableOpacity, Text } from 'react-native';
 
-function Pay({onClose}) {
+function Pay({onClose, selectedItem}) {
   // Ref to interact with Paystack WebView component
   const paystackWebViewRef = useRef(paystackProps.PayStackRef);
 
@@ -13,10 +13,11 @@ function Pay({onClose}) {
         paystackKey="pk_test_97ccd94767aae209e33c425d6e12a0b6357464a6" 
         billingEmail="okpoco15@gmail.com"
         currency='ZAR' 
-        amount={'25000.00'}
+        amount={selectedItem.price}
         reference={'ORDER_1234567890'}
         lastName='Poco'
         firstName='Oscar'
+        billingName={selectedItem.name}
 
         onCancel={(e) => {
           // Handle the payment cancellation
@@ -38,11 +39,7 @@ function Pay({onClose}) {
           borderRadius: 5,
           marginTop: 20,
         }}
-        onPress={() => 
-            {
-                paystackWebViewRef.current?.startTransaction()
-                onClose()
-            }} 
+        onPress={() => paystackWebViewRef.current?.startTransaction()} 
       >
         <Text style={{ color: '#fff', fontSize: 18 }}>Pay Now</Text>
       </TouchableOpacity>

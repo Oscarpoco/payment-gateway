@@ -3,14 +3,60 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Pay from './payment.js';
 
+const items = [
+  {
+    id: 1,
+    name: 'PlayStation 5',
+    price: 'R7000',
+    description: 'Experience gaming like never before with the PlayStation 5 - cutting-edge performance and immersive next-gen gaming.',
+    image: require('./assets/playstation.jpg'),
+  },
+  {
+    id: 2,
+    name: 'Apple iPhone',
+    price: 'R15000',
+    description: 'The latest Apple iPhone with advanced features and stunning design.',
+    image: require('./assets/apple.jpg'),
+  },
+  {
+    id: 3,
+    name: 'Gaming PC',
+    price: 'R20000',
+    description: 'High-performance gaming PC for the ultimate gaming experience.',
+    image: require('./assets/pc.jpg'),
+  },
+  {
+    id: 4,
+    name: 'Headphones',
+    price: 'R2000',
+    description: 'Noise-canceling headphones for immersive sound.',
+    image: require('./assets/headphone.jpg'),
+  },
+  {
+    id: 5,
+    name: 'Huawei Phone',
+    price: 'R12000',
+    description: 'Sleek and powerful Huawei smartphone for everyday use.',
+    image: require('./assets/Huawei.jpg'),
+  },
+  {
+    id: 6,
+    name: 'Monitor',
+    price: 'R3000',
+    description: 'High-resolution monitor for work and gaming.',
+    image: require('./assets/monitor.jpg'),
+  },
+];
+
 export default function App() {
   const [onPay, setOnPay] = useState(false);
   const [lightMode, setLightMode] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(items[0]); 
 
   return (
     <View style={[styles.container, { backgroundColor: lightMode ? '#fff' : '#000' }]}>
       {onPay ? (
-        <Pay onClose={() => setOnPay(false)} />
+        <Pay onClose={() => setOnPay(false)} selectedItem={selectedItem}/>
       ) : (
         <View style={styles.ItemParent}>
           {/* IMAGE */}
@@ -21,7 +67,7 @@ export default function App() {
             ]}
           >
             <Image 
-              source={require('./assets/playstation.jpg')} 
+              source={selectedItem.image} 
               style={styles.image} 
               resizeMode="contain"
             />
@@ -30,77 +76,58 @@ export default function App() {
           {/* ITEM NAME */}
           <View style={styles.itemNameContainer}>
             <Text style={[styles.text, { color: lightMode ? '#000' : '#fff' }, {letterSpacing: 2}]}>
-              Playstation 5
+              {selectedItem.name}
             </Text>
             <Text style={[styles.text, { color: lightMode ? '#ab173f' : '#ab173f' }, { backgroundColor: lightMode ? '#1AEB84' : '#1AEB84' }, {paddingHorizontal: 15, paddingVertical: 3, borderRadius: 10}]}>
-              R7000
+              {selectedItem.price}
             </Text>
           </View>
 
           {/* DESCRIPTION */}
           <View style={styles.descriptionContainer}>
-
             <Text 
               style={[
                 styles.descriptionText, 
-                { 
-                  color: lightMode ? '#000' : '#fff',
-                  textAlign: 'center'
-                }
+                { color: lightMode ? '#000' : '#fff', textAlign: 'center' }
               ]}
             >
-              Experience gaming like never before with the PlayStation 5 - 
-              cutting-edge performance and immersive next-gen gaming.
+              {selectedItem.description}
             </Text>
           </View>
 
+          {/* RECOMMENDED ITEMS */}
           <View style={styles.recommendContainerWrapper}>
-          <Text style={[styles.text, { color: lightMode ? '#000' : '#fff' }, {paddingHorizontal: 5, fontWeight: 600}]}>Choose the item to view</Text>
-            <View style={styles.recommendContainer}>
+            <Text style={[styles.text, { color: lightMode ? '#000' : '#fff', fontWeight: '600' }]}>
+              Choose an item to view
+            </Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <TouchableOpacity style={[styles.recommendItems, { backgroundColor: lightMode ? '#f0f0f0' : '#444' }]}>
-                <Image 
-                source={require('./assets/apple.jpg')} 
-                style={styles.imageRec} 
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={[styles.recommendItems, { backgroundColor: lightMode ? '#f0f0f0' : '#444' }]}>
-                <Image 
-                source={require('./assets/pc.jpg')} 
-                style={styles.imageRec} 
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={[styles.recommendItems, { backgroundColor: lightMode ? '#f0f0f0' : '#333' }]}>
-                <Image 
-                source={require('./assets/headphone.jpg')} 
-                style={styles.imageRec} 
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.recommendItems, { backgroundColor: lightMode ? '#f0f0f0' : '#333' }]}>
-                <Image 
-                source={require('./assets/Huawei.jpg')} 
-                style={styles.imageRec} 
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.recommendItems, { backgroundColor: lightMode ? '#f0f0f0' : '#333' }]}>
-                <Image 
-                source={require('./assets/monitor.jpg')} 
-                style={styles.imageRec} 
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-              </ScrollView>
-            </View>
+              {items.map((item) => (
+                <TouchableOpacity 
+                  key={item.id} 
+                  style={[styles.recommendItems, { backgroundColor: lightMode ? '#f0f0f0' : '#444' }]}
+                  onPress={() => setSelectedItem(item)}
+                >
+                  <Image 
+                    source={item.image} 
+                    style={styles.imageRec} 
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </View>
 
           {/* Checkout Button */}
           <View style={styles.buttonContainer}>
+           <View style={styles.incrementWrapper}>
+            <TouchableOpacity style={styles.buttonIncrement}>
+              <Text style={styles.buttonText}>-</Text>
+            </TouchableOpacity>
+            <Text style={styles.buttonText}>1</Text>
+            <TouchableOpacity style={styles.buttonIncrement}>
+              <Text style={styles.buttonText}>+</Text>
+            </TouchableOpacity>
+           </View>
             <TouchableOpacity
               style={styles.button}
               onPress={() => setOnPay(true)}
@@ -110,7 +137,7 @@ export default function App() {
           </View>
         </View>
       )}
-      <StatusBar style= {lightMode ? 'dark' : 'light'} />
+      <StatusBar style={lightMode ? 'dark' : 'light'} />
     </View>
   );
 }
@@ -135,13 +162,35 @@ const styles = StyleSheet.create({
 
   // BUTTON
   button: {
-    width: '100%',
+    width: '60%',
     height: 50,
     backgroundColor: '#1AEB84',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 50,
     paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+
+  incrementWrapper: {
+    height: 50,
+    backgroundColor: '#f0f0f0',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    paddingVertical: 10,
+    gap: 20
+  },
+
+  buttonIncrement:
+  {
+    width: 40,
+    height: 40,
+    backgroundColor: '#1AEB84',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
   },
 
   buttonText: {
@@ -186,6 +235,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 10
   },
 
   recommendContainerWrapper:
@@ -195,7 +245,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-start',
-
+    gap: 5,
     marginTop: 30,
   },
 
@@ -214,6 +264,7 @@ const styles = StyleSheet.create({
   descriptionContainer:
   {
     width: '100%',
+    height: 80,
     alignItems: 'center',
     justifyContent: 'center',
   },
