@@ -123,7 +123,7 @@ export default function App() {
             <TouchableOpacity style={styles.buttonIncrement}>
               <Text style={styles.buttonText}>-</Text>
             </TouchableOpacity>
-            <Text style={styles.buttonText}>1</Text>
+            <Text style={[styles.buttonText, {color: '#000'}]}>1</Text>
             <TouchableOpacity style={styles.buttonIncrement}>
               <Text style={styles.buttonText}>+</Text>
             </TouchableOpacity>
@@ -162,14 +162,13 @@ const styles = StyleSheet.create({
 
   // BUTTON
   button: {
-    width: '60%',
+    width: '55%',
     height: 50,
     backgroundColor: '#1AEB84',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
     paddingVertical: 10,
-    paddingHorizontal: 10,
   },
 
   incrementWrapper: {
@@ -180,7 +179,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 50,
     paddingVertical: 10,
-    gap: 20
+    paddingHorizontal: 10,
+    gap: 15
   },
 
   buttonIncrement:
@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: 5,
     marginTop: 30,
+    borderRadius: 10,
   },
 
   recommendContainer:
