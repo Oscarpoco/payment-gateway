@@ -7,42 +7,42 @@ const items = [
   {
     id: 1,
     name: 'PlayStation 5',
-    price: 'R7000',
+    price: '7000',
     description: 'Experience gaming like never before with the PlayStation 5 - cutting-edge performance and immersive next-gen gaming.',
     image: require('./assets/playstation.jpg'),
   },
   {
     id: 2,
     name: 'Apple iPhone',
-    price: 'R15000',
+    price: '15000',
     description: 'The latest Apple iPhone with advanced features and stunning design.',
     image: require('./assets/apple.jpg'),
   },
   {
     id: 3,
     name: 'Gaming PC',
-    price: 'R20000',
+    price: '20000',
     description: 'High-performance gaming PC for the ultimate gaming experience.',
     image: require('./assets/pc.jpg'),
   },
   {
     id: 4,
     name: 'Headphones',
-    price: 'R2000',
+    price: '2000',
     description: 'Noise-canceling headphones for immersive sound.',
     image: require('./assets/headphone.jpg'),
   },
   {
     id: 5,
     name: 'Huawei Phone',
-    price: 'R12000',
+    price: '12000',
     description: 'Sleek and powerful Huawei smartphone for everyday use.',
     image: require('./assets/Huawei.jpg'),
   },
   {
     id: 6,
     name: 'Monitor',
-    price: 'R3000',
+    price: '3000',
     description: 'High-resolution monitor for work and gaming.',
     image: require('./assets/monitor.jpg'),
   },
@@ -51,12 +51,25 @@ const items = [
 export default function App() {
   const [onPay, setOnPay] = useState(false);
   const [lightMode, setLightMode] = useState(true);
-  const [selectedItem, setSelectedItem] = useState(items[0]); 
+  const [selectedItem, setSelectedItem] = useState(items[0]);
+  const [quantity, setQuantity] = useState(1);
+
+  const handleCheckout = () => {
+    if (selectedItem && quantity > 0) {
+      setOnPay(true);
+    } else {
+      alert('Please select a valid item and quantity.');
+    }
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: lightMode ? '#fff' : '#000' }]}>
       {onPay ? (
-        <Pay onClose={() => setOnPay(false)} selectedItem={selectedItem}/>
+        <Pay 
+          selectedItem={selectedItem} 
+          quantity={quantity} 
+          onClose={() => setOnPay(false)} 
+        />
       ) : (
         <View style={styles.ItemParent}>
           {/* IMAGE */}
@@ -75,11 +88,14 @@ export default function App() {
 
           {/* ITEM NAME */}
           <View style={styles.itemNameContainer}>
-            <Text style={[styles.text, { color: lightMode ? '#000' : '#fff' }, {letterSpacing: 2}]}>
+            <Text style={[styles.text, { color: lightMode ? '#000' : '#fff', letterSpacing: 2 }]}>
               {selectedItem.name}
             </Text>
-            <Text style={[styles.text, { color: lightMode ? '#ab173f' : '#ab173f' }, { backgroundColor: lightMode ? '#1AEB84' : '#1AEB84' }, {paddingHorizontal: 15, paddingVertical: 3, borderRadius: 10}]}>
-              {selectedItem.price}
+            <Text style={[
+              styles.text, 
+              { color: '#ab173f', backgroundColor: '#1AEB84', paddingHorizontal: 15, paddingVertical: 3, borderRadius: 10 }
+            ]}>
+              R{selectedItem.price}
             </Text>
           </View>
 
@@ -105,7 +121,10 @@ export default function App() {
                 <TouchableOpacity 
                   key={item.id} 
                   style={[styles.recommendItems, { backgroundColor: lightMode ? '#f0f0f0' : '#444' }]}
-                  onPress={() => setSelectedItem(item)}
+                  onPress={() => {
+                    setSelectedItem(item);
+                    setQuantity(1); 
+                  }}
                 >
                   <Image 
                     source={item.image} 
@@ -117,20 +136,26 @@ export default function App() {
             </ScrollView>
           </View>
 
-          {/* Checkout Button */}
+          {/* Checkout and Quantity Controls */}
           <View style={styles.buttonContainer}>
-           <View style={styles.incrementWrapper}>
-            <TouchableOpacity style={styles.buttonIncrement}>
-              <Text style={styles.buttonText}>-</Text>
-            </TouchableOpacity>
-            <Text style={[styles.buttonText, {color: '#000'}]}>1</Text>
-            <TouchableOpacity style={styles.buttonIncrement}>
-              <Text style={styles.buttonText}>+</Text>
-            </TouchableOpacity>
-           </View>
+            <View style={styles.incrementWrapper}>
+              <TouchableOpacity 
+                style={styles.buttonIncrement}
+                onPress={() => setQuantity(Math.max(1, quantity - 1))}
+              >
+                <Text style={[styles.buttonText, { fontSize: 20 }]}>-</Text>
+              </TouchableOpacity>
+              <Text style={[styles.buttonText, { color: '#000' }]}>{quantity}</Text>
+              <TouchableOpacity 
+                style={styles.buttonIncrement}
+                onPress={() => setQuantity(quantity + 1)}
+              >
+                <Text style={[styles.buttonText, { fontSize: 20 }]}>+</Text>
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => setOnPay(true)}
+              onPress={() => handleCheckout()}
             >
               <Text style={styles.buttonText}>Checkout</Text>
             </TouchableOpacity>
