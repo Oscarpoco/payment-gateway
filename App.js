@@ -9,7 +9,8 @@ import {
   ScrollView, 
   Animated, 
   Dimensions,
-  ActivityIndicator 
+  ActivityIndicator,
+  SafeAreaView 
 } from 'react-native';
 import { Paystack } from 'react-native-paystack-webview';
 import { BlurView } from 'expo-blur';
@@ -29,7 +30,7 @@ const items = [
   },
   {
     id: 2,
-    name: 'Apple iPhone',
+    name: 'Apple Macbook',
     price: '15000',
     description: 'The latest Apple iPhone with advanced features and stunning design.',
     image: require('./assets/apple.jpg'),
@@ -130,7 +131,7 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Paystack
         paystackKey="pk_test_97ccd94767aae209e33c425d6e12a0b6357464a6"
         billingEmail="okpoco15@gmail.com"
@@ -268,8 +269,8 @@ export default function App() {
       <View style={styles.toast}>
           <Toast/>
       </View>
-      <StatusBar style="light" />
-    </View>
+      <StatusBar style="light" backgroundColor='rgba(0, 0, 0, .2)' />
+    </SafeAreaView>
   );
 }
 
@@ -320,10 +321,10 @@ const styles = StyleSheet.create({
   imageContainer: 
   {
     height: 400,
-    backgroundColor: '#111',
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     overflow: 'hidden',
+    paddingTop: 50
   },
 
   heroImage: 
@@ -342,7 +343,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255,255,255,0.3)',
   },
 
   priceText: 
@@ -531,8 +532,8 @@ const styles = StyleSheet.create({
   checkoutButtonText: 
   {
     color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontWeight: 600,
   },
 
   toast:
